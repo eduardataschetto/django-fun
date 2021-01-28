@@ -9,9 +9,12 @@ q2 = Article.objects.filter(pub_date__lte='2020-12-31').filter(pub_date__gte='20
 
 
 -> o reporter com mais artigos em 2020 
-
+q3 = Article.objects.filter(pub_date__year='2020').values('reporter_id').annotate(count=Count('reporter_id')).order_by('-count')[0]['reporter_id'] 
+r = Reporter.objects.get(id=q3) 
+>>> r
+<Reporter: Eduarda Taschetto>
  
-
+ 
 -> artigos que contenham a palvra "python" e tenham sido publicados 
 por determinado reporter em abril de 2015
 q4 = Article.objects.filter(headline__icontains='python').filter(reporter_id=3).filter(pub_date__year='2015').filter(pub_date__month='04')
@@ -23,7 +26,7 @@ a letra "i"
 q5 = Publication.objects.filter(title__icontains='i').count()
 RESULTADO: 5
 
--> A media de publicacoes por artigos
 
->>> pu = Publication.objects.all().count() / Article.objects.all().count() 
+-> A media de publicacoes por artigos
+>>> q6 = Publication.objects.all().count() / Article.objects.all().count() 
 2.8
